@@ -14,3 +14,4 @@ VG  was written in JS with PS5(Processing).
 Version | features
 --------|---------
  0.1    | add Node and connect
+ 0.1.1  | fix cache Node and Node under Node

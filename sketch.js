@@ -1,9 +1,10 @@
 var graph;
-
+var cache_node;
 
 function setup(){
     createCanvas(innerWidth,innerHeight-90);
     graph = new Graph();
+    cache_node = null;
     
     //  graph.addNode('Me');
     //  graph.addNode('Alex');
@@ -34,13 +35,19 @@ function draw(){
 
 function mousePressed(){
     if(mouseIsPressed && mouseButton == LEFT){
-        for(let n in graph.nodes){
-            if(graph.nodes[n].clicked()){
-                    graph.nodes[n].color = (70,70,70);
-                    graph.nodes[n].pos.x = mouseX;
-                    graph.nodes[n].pos.y = mouseY;
+        if(cache_node == null){
+            for(let n in graph.nodes){
+                if(graph.nodes[n].clicked()){
+                    cache_node = graph.nodes[n];
+                }
             }
+        }else{
+            cache_node.color = (70,70,70);
+            cache_node.pos.x = mouseX;
+            cache_node.pos.y = mouseY;
         }
+    }else{
+        cache_node = null;
     }
 }
 

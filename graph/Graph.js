@@ -18,7 +18,6 @@ class Graph{
         let n = new Node(node);
         this.graph[node] = n;
         this.nodes.push(n);
-
         return this;
     }
 
@@ -34,10 +33,13 @@ class Graph{
         return this.node[index];
     }
 
-    show(){
+    show(showCost = false){
         if(this.nodes.length > 0){
             for (var i = 0; i < this.nodes.length; i++) {
                 this.nodes[i].showEdges();
+                if(showCost){
+                    this.nodes[i].showCost();
+                }
             }
 
             for (var i = 0; i < this.nodes.length; i++) {
@@ -45,8 +47,5 @@ class Graph{
             }
         }
     }
-
-    
-
 
 }

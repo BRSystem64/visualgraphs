@@ -1,4 +1,4 @@
-
+# Visual Graphs
  Visual Graphs allows that you build graphs. Graphs is a object of graph theory study, which are mathematical structures used to model relations between objects.
 
 > You can read more about Graphs [here](https://en.wikipedia.org/wiki/Graph_theory).

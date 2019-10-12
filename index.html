@@ -24,7 +24,6 @@
 </head>
 
 <body>
-
 	<div id="layout">
 		<a href="#menu" id="menuLink" class="menu-link">
 			<span></span>
@@ -53,8 +52,7 @@
 					<li onClick="callable(end)" class="pure-menu-item"><a href="#" class="pure-menu-link"><img><i title="end"
 								class='icon fas fa-thumbtack'></i></img> End</a></li>
 					<li class="pure-menu-item title-item">Algorithms</li>
-					<li onClick="" class="pure-menu-item"><a href="#" class="pure-menu-link"> Comming
-							Soon...</a></li>
+					<li onClick="callable(bfs)" class="pure-menu-item"><a href="#" class="pure-menu-link">BFS</a></li>
 				</ul>
 			</div>
 		</div>
@@ -63,12 +61,12 @@
 		<div id="operations">
 			<ul class="menu-list">
 				<li onClick="callable(empty)"><img><i title="New project" class='icon far fa-file'> Empty</i></li>
-				<li onClick="callable(features)"><img><i title="Save as PNG" class='icon far fa-save'> Save PNG</i></li>
-				<li onClick="callable(features)"><img><i title="Export a project" class='icon far fa-file-archive'>
+				<li onClick="callable(exportProject)"><img><i title="Export a project" class='icon far fa-file-archive'>
 						Export</i></li>
-				<li onClick="callable(features)"><img><i title="Import a project" class='icon far fa-folder-open'>
+				<li onClick="callable(importProject)"><img><i title="Import a project" class='icon far fa-folder-open'>
 						Import</i></li>
 				<li onClick="callable(help)"><img>! Help</i></li>
+
 
 			</ul>
 		</div>
@@ -90,7 +88,9 @@
 		<!-- Scripts Load -->
 		<script src="graph/Graph.js"></script>
 		<script src="graph/Node.js"></script>
+		<script src="utils/algorithms.js"></script>
 		<script src="utils/operations.js"></script>
+		<script src="utils/JsonReader.js"></script>
 		<script src="sketch.js"></script>
 	</div>
 </body>

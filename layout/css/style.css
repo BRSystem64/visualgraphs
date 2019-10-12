@@ -93,7 +93,7 @@ button{
   font-weight: bold;
 }
 
-.close:hover{
+.close:hover, .closed:hover{
   cursor: pointer;
 }
 

@@ -1,17 +1,24 @@
 
 class Node {
     constructor(value) {
+        this.visited = false;
+        this.parent = null;
         this.color = (31, 141, 214);
+        this.newColor = null;
         this.value = value;
         this.edges = [];
         this.pos = createVector(random(100, innerWidth - 50), random(100, innerHeight - 100));
     }
 
+    setNewColor(a){
+        this.newColor = a; 
+    }
 
     connect(node) {
         let a = [node, 0];
         this.edges.push(a);
     }
+
 
     hasConnection(node) {
         for(let n in this.edges){
@@ -37,10 +44,11 @@ class Node {
         textAlign(CENTER);
         let radius = textWidth(this.value);
         fill(this.color);
-        ellipse(this.pos.x, this.pos.y, radius * 1.2, radius * 1.2);
+        ellipse(this.pos.x, this.pos.y, radius * 1.5, radius * 1.5);
         fill(255);
         text(this.value, this.pos.x, this.pos.y);
-        this.color = color(31, 141, 214);
+        this.color = color(this.newColor == null ? [31, 141, 214] : this.newColor);
+
     }
 
     showEdges() {

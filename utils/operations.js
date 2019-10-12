@@ -108,6 +108,10 @@ function cost() {
             else {
                 c = parseInt(window.prompt('Define the cost'));
                 if (Number.isInteger(c)) {
+                    if (c < 0) {
+                        divMessage('w', 'The number is negative.');
+                    }
+
                     cache_node.defineCost(node, c);
                     if (node.hasConnection(cache_node)) {
                         node.defineCost(cache_node, c);
@@ -123,8 +127,6 @@ function cost() {
     }
     mouseButton = RIGHT;
 }
-
-
 
 
 /*

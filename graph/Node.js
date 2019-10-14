@@ -41,10 +41,11 @@ class Node {
 
     show() {
         noStroke();
+        textSize(16);
         textAlign(CENTER);
         let radius = textWidth(this.value);
         fill(this.color);
-        ellipse(this.pos.x, this.pos.y, radius * 1.5, radius * 1.5);
+        ellipse(this.pos.x, this.pos.y, radius * 1.2, radius * 1.2);
         fill(255);
         text(this.value, this.pos.x, this.pos.y);
         this.color = color(this.newColor == null ? [31, 141, 214] : this.newColor);

@@ -112,7 +112,7 @@ function end() {
 }
 
 function help() {
-    divMessage('w', "You can read more about project <a href='https://github.com/BRSystem64/visualgraphs/tree/master/doc'/>here</a>.\n Dont forget to save your project before click in this link.");
+    divMessage('w', "You can read more about project <a href='https://github.com/BRSystem64/visualgraphs/tree/master/doc/vgdocument.pdf'/>here</a>.\n Dont forget to save your project before click in this link.");
     cache_option = null;
 
 }

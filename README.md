@@ -22,6 +22,7 @@ The nodes connections have costs, for default the cost are 0 and you can\'t see 
 
 Version | features
 --------|---------
+** 1.3**    | add algorithm DFS  
 ** 1.2**    | add algorithm BFS <p> add export and import project<p>
  **1.0**    | Release for VisualGraphs with more features. <p><p> **what has changed?** <p> 1. Create connections with nodes(Unidirectional and Bidirectional) <br> 2. Define the cost <br> 3. Define the start and End of Graph.
 **0.1.1**   | fix cache Node and Node under Node.

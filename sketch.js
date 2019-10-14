@@ -112,7 +112,7 @@ function end() {
 }
 
 function help() {
-    divMessage('w', "You can read more about project <a href='https://github.com/BRSystem64/visualgraphs'/>here</a>.\n Dont forget to save your project before click in this link.");
+    divMessage('w', "You can read more about project <a href='https://github.com/BRSystem64/visualgraphs/tree/master/doc'/>here</a>.\n Dont forget to save your project before click in this link.");
     cache_option = null;
 
 }
@@ -163,7 +163,6 @@ function exportProject() {
 
     var json = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataJson));
     var a = document.createElement('a');
-    console.log(json);
     a.href = 'data:' + json;
     a.download = 'vg-project.json';
     a.click();
@@ -201,18 +200,29 @@ function importProject() {
     Algorithms
 */
 
+function dfs(){
+    executeAlgorithm(dfsImpl);
+    cache_option = null;
+}
+
 function bfs() {
+    executeAlgorithm(bfsImpl);
+    cache_option = null;
+}
+
+function executeAlgorithm(alg){
     if (graph != null) {
         clearParentsAndVisited();
         if (graph.start == null || graph.end == null) {
             divMessage('e', 'You need define the start and the end.');
         }
         else {
-            let nodes = bfsImpl(graph);
+            let nodes = alg(graph);
             if (!nodes[1]) {
                 divMessage('e', 'Can\'t find the end.');
             } else {
                 for (let i in nodes[0]) {
+                    console.log(nodes[0][i].value);
                     nodes[0][i].setNewColor([58, 195, 118]);
                 }
             }
@@ -220,7 +230,6 @@ function bfs() {
     } else {
         divMessage('e', 'The Graph is null.');
     }
-    cache_option = null;
 }
 
 
@@ -228,6 +237,8 @@ function clearParentsAndVisited() {
     for (n in graph.nodes) {
         graph.nodes[n].visited = false;
         graph.nodes[n].parent = null;
+        graph.nodes[n].newColor = null;
+
     }
 }
 

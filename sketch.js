@@ -1,52 +1,68 @@
-/*
+/*****************
     GLOBAL VARIABLES
-*/
-
+*****************/
 var graph;
 var cache_node;
 var cache_option;
 var message;
 var show_cost;
 
-
-
+/*****************
+    Principal functions (Setup, draw, callable)
+*****************/
 function setup() {
-    createCanvas(innerWidth, innerHeight - 50);
+    createCanvas(innerWidth, innerHeight - 100);
     graph = new Graph();
     cache_node = null;
     cache_option = null;
     show_cost = false;
 }
 
-/*
-    Loop Function.
-*/
 function draw() {
     background(255);
     graph.show(show_cost);
     if (cache_option != null) {
         cache_option();
+    } else {
+        cache_option = move;
     }
 }
 
-
-
-/*
-    Read the option and set on cache_option, to method draw call.
-*/
-
-function callable(fun) {
+function callable(func) {
     cleanNodeCache();
     showNodeCache();
-    cache_option = fun;
+    cache_option = func;
 }
 
-function cleanNodeCache() {
+
+/*****************
+  Tools of Graphs (move, start, end, cost, connection, remove)
+*****************/
+
+function move() {
+    if (hasMouseClicked()) {
+        if (cache_node == null) {
+            cache_node = getNode();
+        }
+        if (cache_node != null) {
+            cache_node.color = (70, 70, 70);
+            cache_node.pos.x = mouseX;
+            cache_node.pos.y = mouseY;
+            return;
+        }
+    }
     cache_node = null;
 }
 
-function showNodeCache() {
-    document.getElementById("cacheNode").innerHTML = (cache_node == null ? '' : cache_node.value);
+function removeNode() {
+    if (hasMouseClicked()) {
+        cache_node = getNode();
+        if (cache_node != null) {
+            graph.remove(cache_node);
+            cache_node = null;
+            cache_option = null;
+        }
+    }
 }
 
 function showCost() {
@@ -54,97 +70,150 @@ function showCost() {
     cache_option = null;
 }
 
-
-
-
-/*
-    Method to accept 'enter' into input.
-*/
-function enterFunction(event) {
-    var x = event.which || event.keyCode;
-    if (x == 13) {
-        add();
-    }
-}
-
-/* 
-    Method to add Node.
-*/
 function add() {
-    let value = document.getElementById('newNode').value.toUpperCase();
+    let value = document.getElementById('new-node').value.toUpperCase();
     if (value.trim() != '') {
-        addNode(value);
+        graph.addNode(value);
     }
     else {
-        divMessage('e', ' You need type a name to Node.');
+       message('You need type a name to new node.', 'danger');
     }
-    document.getElementById('newNode').innerHTML = '';
-    document.getElementById('newNode').value = '';
+    document.getElementById('new-node').innerHTML = '';
+    document.getElementById('new-node').value = '';
 }
 
-function empty() {
-    if (confirm('Are you sure you want a new project?')) {
-        graph = new Graph();
-        cache_node = null;
-        cache_option = null;
-        show_cost = false;
-    }
-    cache_option = null;
+function uniConnection() {
+    return connection(0);
 }
 
-function features() {
-    divMessage('w', 'We are working on this features! Thank you for using our app :)');
-    cache_option = null;
+function biConnection() {
+    return connection(1);
+}
+
+function connection(type) {
+    if (hasMouseClicked()) {
+        node = getNode();
+        if (cache_node == null) {
+            cache_node = node;
+        }
+        else if (node != null && cache_node.hasConnection(node)) {
+            message(`${cache_node.value} already have connection with ${node.value}`, 'warning');
+        }
+        else if (node != null && node.hasConnection(cache_node)) {
+            message(`${node.value} already have connection with ${cache_node.value}`, 'warning');
+        }
+        else if (cache_node != node && cache_node != null && node != null) {
+            if (type == 0) {
+                cache_node.connect(node);
+            }
+            if (type == 1) {
+                node.connect(cache_node);
+                cache_node.connect(node);
+            }
+            cleanNodeCache();
+        }
+        showNodeCache();
+    }
+}
+
+function cost() {
+    if (hasMouseClicked()) {
+        node = getNode();
+        if (cache_node == null) {
+            cache_node = node;
+        } else if (node != null && cache_node != node) {
+            if (!cache_node.hasConnection(node)) {
+                message(`${cache_node.value} dont have connection with ${node.value}`, 'warning');
+            }
+            else {
+                c = parseInt(window.prompt('Define the cost'));
+                if (Number.isInteger(c) && c > 0) {
+                    cache_node.defineCost(node, c);
+                    if (node.hasConnection(cache_node)) {
+                        node.defineCost(cache_node, c);
+                    }
+                }
+                else {
+                    message('Only number bigger zero is possible', 'warning');
+                }
+                cleanNodeCache();
+            }
+        }
+        showNodeCache();
+    }
+    mouseButton = RIGHT;
 }
 
 function start() {
-    if (startNode()) {
-        divMessage('w', `${node.value} is the start of Graph`);
-        cache_option = null;
+    if (hasMouseClicked()) {
+        node = getNode();
+        if (node != null) {
+            graph.setStart(node);
+            message(`Start of Graph: ${node.value}`, 'success');
+            cache_option = null;
+        }
     }
+
 }
 
 function end() {
-    if (endNode()) {
-        divMessage('w', `${node.value} is the end of Graph`);
-        cache_option = null;
+    if (hasMouseClicked()) {
+        node = getNode();
+        if (node != null) {
+            graph.setEnd(node);
+            message(`End of Graph: ${node.value}`, 'success');
+            cache_option = null;
+        }
     }
 }
 
-function help() {
-    divMessage('w', "You can read more about project <a href='https://github.com/BRSystem64/visualgraphs/tree/master/doc/vgdocument.pdf'/>here</a>.\n Dont forget to save your project before click in this link.");
+/*****************
+  Algorithms operations
+*****************/
+function dfs() {
+    executeAlgorithm(dfsImpl);
     cache_option = null;
-
 }
 
-/*
-    Message functions
-*/
+function bfs() {
+    executeAlgorithm(bfsImpl);
+    cache_option = null;
+}
 
-function divMessage(type, message) {
-
-    switch (type) {
-        case 'e':
-            document.getElementById('title-message').innerHTML = "Error: ";
-            document.getElementById('divMessage').style.background = "rgba(217, 83, 79, 0.1)";
-            document.getElementById('divMessage').style.color = "#d9534f";
-            break;
-        case 'w':
-            document.getElementById('title-message').innerHTML = "Warning: ";
-            document.getElementById('divMessage').style.background = "#FEEFB3";
-            document.getElementById('divMessage').style.color = "#9F6000";
-            break;
+function executeAlgorithm(alg) {
+    if (graph != null) {
+        clearParentsAndVisited();
+        if (graph.start == null || graph.end == null) {
+            message('You need define the start and the end.', 'warning');
+        }
+        else {
+            let nodes = alg(graph);
+            if (!nodes[1]) {
+                message('Cant find the end.', 'danger');
+            } else {
+                for (let i in nodes[0]) {
+                    nodes[0][i].setNewColor([58, 195, 118]);
+                }
+            }
+        }
+    } else {
+        message('Cant find the end.', 'warning');
     }
-    document.getElementById("message").innerHTML = message;
-    document.getElementById("divMessage").style.visibility = "visible";
 }
 
-function closeDiv() {
-    document.getElementById("divMessage").style.visibility = "hidden";
+/*****************
+  Project operations (new, export, import)
+*****************/
+
+function empty() {
+    if (confirm('Are you sure you want a new project?')) {
+        setup();
+    }
+    cache_option = null;
 }
+
 
 function exportProject() {
-
     dataJson = { "nodes": {}, "edges": {} };
     let cont = 0;
     for (let aux in graph.nodes) {
@@ -160,7 +229,6 @@ function exportProject() {
             cont++;
         }
     }
-
     var json = "text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataJson));
     var a = document.createElement('a');
     a.href = 'data:' + json;
@@ -172,9 +240,7 @@ function exportProject() {
 
 
 function importProject() {
-
     cache_option = null;
-
     JSONReader.read((result) => {
         if (result != null) {
             setup();
@@ -192,60 +258,49 @@ function importProject() {
             }
         }
     });
-
 }
 
-
-/*
-    Algorithms
-*/
-
-function dfs(){
-    executeAlgorithm(dfsImpl);
-    cache_option = null;
+/*****************
+  Auxiliar functions
+*****************/
+function cleanNodeCache() {
+    cache_node = null;
 }
 
-function bfs() {
-    executeAlgorithm(bfsImpl);
-    cache_option = null;
+function showNodeCache() {
+    document.getElementById("cache-text").innerHTML = "Cache: " + (cache_node == null ? '' : cache_node.value);
 }
-
-function executeAlgorithm(alg){
-    if (graph != null) {
-        clearParentsAndVisited();
-        if (graph.start == null || graph.end == null) {
-            divMessage('e', 'You need define the start and the end.');
-        }
-        else {
-            let nodes = alg(graph);
-            if (!nodes[1]) {
-                divMessage('e', 'Can\'t find the end.');
-            } else {
-                for (let i in nodes[0]) {
-                    console.log(nodes[0][i].value);
-                    nodes[0][i].setNewColor([58, 195, 118]);
-                }
-            }
-        }
-    } else {
-        divMessage('e', 'The Graph is null.');
-    }
-}
-
 
 function clearParentsAndVisited() {
     for (n in graph.nodes) {
         graph.nodes[n].visited = false;
         graph.nodes[n].parent = null;
-        graph.nodes[n].newColor = null;
+        graph.nodes[n].setNewColor(null);
 
     }
 }
 
-function clearColor() {
-    for (n in graph.nodes) {
-        graph.nodes[n].newColor = null;
+function enterFunction(event) {
+    var x = event.which || event.keyCode;
+    if (x == 13) {
+        add();
     }
 }
 
+function getNode() {
+    for (let n in graph.nodes) {
+        if (graph.nodes[n].clicked()) {
+            return graph.nodes[n];
+            break;
+        }
+    }
+    return null;
+}
+
+function hasMouseClicked() {
+    if (mouseIsPressed && mouseButton == LEFT) {
+        return true;
+    }
+    return false;
+}
 

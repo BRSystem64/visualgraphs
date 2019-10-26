@@ -1,0 +1,184 @@
+/*
+    Default style
+*/
+html {
+    box-sizing: border-box;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    font-family: 'Quicksand', sans-serif !important;
+}
+
+body {
+    color: #777;
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.5;
+}
+/*********************************************/
+/*
+    navbar and sidebar
+*/
+nav {
+    background: black;
+    height: 40px;
+    position: relative;
+}
+
+.sidebar {
+    top: 40px;
+    height: 100%;
+    width: 200px;
+    background-color: black;
+    position: fixed;
+    z-index: 1;
+    overflow: auto;
+}
+
+.sidebar-btn {
+    position: relative;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    margin: 0px;
+}
+
+
+/*********************************************/
+/*
+    html components
+*/
+
+input,
+button {
+    padding: 5px;
+    border: none;
+    outline: none;
+    margin: 2px;
+    font-family: 'Quicksand', sans-serif !important;
+}
+
+a, input, button{
+    text-decoration: none;
+}
+
+a, button{
+    cursor: pointer;
+}
+
+input {
+    border-bottom: 1px solid rgb(40,40,40);
+    -webkit-transition: width 2s; /* Safari prior 6.1 */
+    transition: width 2s;
+}
+
+input:hover{
+    border-bottom: 2px solid #8DB255;
+
+}
+
+/*********************************************/
+/*
+    edit style elements
+*/
+
+/*
+    Title
+*/
+label.title {
+    font-size: 18px;
+    margin-left: 20px;
+    color: white;
+}
+
+/*
+    menu-list
+*/
+.menu-list, .sub-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.menu-list a {
+    display: block;
+    text-decoration: none;
+    padding: 10px;
+
+}
+.menu-list a:hover,  .sub-menu-list a:hover  {
+    background-color: rgba(40, 40, 40);
+    
+}
+
+.menu-list li:hover .sub-menu-list{
+    display: block;
+    max-height: 100% !important;
+    overflow: unset !important;
+}
+.sub-menu-list {
+    margin-left:50px;
+    width: 200px;
+    position: fixed;
+    overflow: hidden;
+    max-height: 0;
+    background-color: rgba(25, 25, 25);
+}
+
+
+/*
+    Message (alert)
+*/
+.message-box{
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    width: auto;
+    min-width: 300px;
+    height: auto;
+    display: grid;
+    padding: 5px;
+  }
+.message-box-text{
+    padding: 10px;
+}  
+.message-warning{
+    border: 1px solid #ffa502;
+    color: #ffa502;
+}
+.message-success{
+    border: 1px solid #8DB255;
+    color: #8DB255;
+}
+.message-danger{
+    border: 1px solid #ff6348;
+    color: #ff6348;
+
+}
+/*********************************************/
+
+/*
+    Others
+*/
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+
+.green{
+    background: #8DB255;
+}
+
+
+.col input,
+.col button,
+.col .sub-title{
+    width: 100%;
+}

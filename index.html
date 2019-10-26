@@ -2,99 +2,84 @@
 <html>
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" href="layout/icons/icon-vg.png">
-	<title>Visual Graphs</title>
-	<!-- Pure framework-->
-	<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css"
-		integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Visual Graphs</title>
 
-	<!-- Pure Change Style -->
-	<link rel="stylesheet" href="layout/css/style.css">
-	</link>
-	<script src="layout/js/layoutUtils.js"></script>
+    <!-- Bruno(PidBird framework) Style -->
+    <link rel="stylesheet" href="layout/css/grid.css" />
+    <link rel="stylesheet" href="layout/css/components.css" />
+    <link rel="icon" href="layout/img/icon-vg.png">
 
-	<!-- icons -->
-	<script src="https://kit.fontawesome.com/a076d05399.js"></script>
-
-	<!-- processing lib -->
-	<script src="./lib/p5.js"></script>
-
+    <!-- Font-->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand&display=swap" rel="stylesheet">
 </head>
 
 <body>
-	<div id="layout">
-		<a href="#menu" id="menuLink" class="menu-link">
-			<span></span>
-		</a>
-		<!-- Sidebar Menu -->
-		<div id="menu">
-			<div class="pure-menu">
-				<a class="pure-menu-heading" href="#">VisualGraphs <img src="layout/icons/icon-vg.png" /><label
-						style="font-size:9px">1.0</label></a>
-				<ul class="pure-menu-list">
-					<li class="pure-menu-item title-item no-line">View Mode</li>
-					<li onClick="callable(move)" class="pure-menu-item"><a href="#" class="pure-menu-link"><img><i
-								title="Free Mode" class='icon fas fa-mouse-pointer'></i> Free</a></li>
-					<li onClick="callable(showCost)" class="pure-menu-item"><a href="#" class="pure-menu-link"><img><i
-								title="Free Mode" class='icon far fa-eye'></i> show Cost</a></li>
-					<li class="pure-menu-item title-item"> Graph Tools</li>
-					<li onClick="callable(biConnection)" class="pure-menu-item"><a href="#" class="pure-menu-link"><img><i
-								title="bidirectional" class='icon fas fa-exchange-alt'></i></img> Bidirectional</a></li>
-					<li onClick="callable(uniConnection)" class="pure-menu-item"><a href="#" class="pure-menu-link"><img><i
-								title="unidirectional" class='icon fas fa-long-arrow-alt-right'></i></img>
-							Unidirectional</a></li>
-					<li onClick="callable(cost)" class="pure-menu-item"><a href="#" class="pure-menu-link"><img><i
-								title="end" class='icon far fa-bookmark'></i></img> Cost</a></li>
-					<li onClick="callable(start)" class="pure-menu-item"><a href="#" class="pure-menu-link"><img><i title="begin"
-								class='icon fas fa-map-marker-alt'></i></img> Start</a></li>
-					<li onClick="callable(end)" class="pure-menu-item"><a href="#" class="pure-menu-link"><img><i title="end"
-								class='icon fas fa-thumbtack'></i></img> End</a></li>
-					<li class="pure-menu-item title-item">Algorithms</li>
-					<li onClick="callable(bfs)" class="pure-menu-item"><a href="#" class="pure-menu-link">BFS</a></li>
-					<li onClick="callable(dfs)" class="pure-menu-item"><a href="#" class="pure-menu-link">DFS</a></li>
+    <!-- Sidebar -->
+    <div class="sidebar left" id="sidebar" style="display:none;">
+        <ul class="menu-list">
+            <li><a>File</a>
+                <ul class="sub-menu-list">
+                    <li onClick="callable(empty)"><a> New project</a></li>
+                    <li onClick="callable(importProject)"><a> Import project</a></li>
+                    <li onClick="callable(exportProject)"><a> Export project</a></li>
+                </ul>
+            </li>
+            <li><a>Tools</a>
+                <ul class="sub-menu-list">
+                    <li onClick="callable(removeNode)"><a> Remove</a></li>
+                    <li onClick="callable(showCost)" ><a> Show Cost</a></li>
+                    <li onClick="callable(cost)"><a> Change Cost</a></li>
+                    <li onClick="callable(biConnection)"><a> Bidirectional Connection</a></li>
+                    <li onClick="callable(uniConnection)"><a> Unidirectional Connection</a></li>
+                    <li onClick="callable(start)"><a> Set start</a></li>
+                    <li onClick="callable(end)"><a> Set end</a></li>
+                </ul>
+            </li>
+            <li><a>Algorithms</a>
+                <ul class="sub-menu-list">
+                    <li onClick="callable(bfs)"><a> Breadth-First Search</a></li>
+                    <li onClick="callable(dfs)"><a> Depth-First Search</a></li>
+                </ul>
+            </li>
+            <li><a>About Project</a></li>
+        </ul>
+    </div>
 
-				</ul>
-			</div>
-		</div>
+    <!-- Navbar -->
+    <nav>
+        <button class="sidebar-btn green" onClick="sidebar()"> ☰ </button>
+        <label class="title">Visual Graphs</label>
+    </nav>
 
-		<!-- Navegation Options Menu -->
-		<div id="operations">
-			<ul class="menu-list">
-				<li onClick="callable(empty)"><img><i title="New project" class='icon far fa-file'> Empty</i></li>
-				<li onClick="callable(exportProject)"><img><i title="Export a project" class='icon far fa-file-archive'>
-						Export</i></li>
-				<li onClick="callable(importProject)"><img><i title="Import a project" class='icon far fa-folder-open'>
-						Import</i></li>
-				<li onClick="callable(help)"><img>! Help</i></li>
-
-
-			</ul>
-		</div>
-
-		<!-- Input and messages -->
-		<button class="pure-menu-heading right" onClick="add()"> + </button>
-		<input class="pure-menu-heading right" onkeypress="enterFunction(event)" placeholder="Node name..." id="newNode"
-			type="text" />
-		<b><label class="pure-menu-item align">Cache Node: </label></b><label class="pure-menu-item align"
-			id="cacheNode"></label>
-
-		<div id="divMessage" class="oaerror">
-			<strong id="title-message"></strong><label id="message"></label>
-			<label onClick="closeDiv();" class="closed"> X </label>
-		</div>
-
+    <!-- Cache and input -->
+    <div class="container">
+        <div class="row">
+            <div class="col s8 l2 off-l2">
+                <label id="cache-text">Cache:</label>
+            </div>
+            <div class="col s4  l2 off-l6">
+                <input id="new-node" type="text" placeholder="Name of node..." onkeypress="enterFunction(event)">
+            </div>
+        </div>
+    
+    
+        <div>
+            <script src="./lib/p5.js"></script>
+        </div>
+    </div>
+    
 
 
 		<!-- Scripts Load -->
-		<script src="graph/Graph.js"></script>
-		<script src="graph/Node.js"></script>
-		<script src="utils/algorithms.js"></script>
-		<script src="utils/operations.js"></script>
-		<script src="utils/JsonReader.js"></script>
-		<script src="sketch.js"></script>
-	</div>
+    <script src="./utils/algorithms.js"></script>
+    <script src="./utils/JsonReader.js"></script>
+    <script src="./sketch.js"></script>
+	<script src="./graph/Graph.js"></script>
+    <script src="./graph/Node.js"></script>
+    <script src="./layout/js/functions-style.js"></script>
 </body>
+
 
 </html>

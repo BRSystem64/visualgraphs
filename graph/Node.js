@@ -10,8 +10,8 @@ class Node {
         this.pos = createVector(random(100, innerWidth - 50), random(100, innerHeight - 100));
     }
 
-    setNewColor(a){
-        this.newColor = a; 
+    setNewColor(a) {
+        this.newColor = a;
     }
 
     connect(node) {
@@ -19,19 +19,27 @@ class Node {
         this.edges.push(a);
     }
 
+    remove(node) {
+        for (let x in this.edges) {
+            if (this.edges[x][0] == node) {
+                this.edges.splice(x, 1);
+                break;
+            }
+        }
+    }
 
     hasConnection(node) {
-        for(let n in this.edges){
-            if(node == this.edges[n][0]){
+        for (let n in this.edges) {
+            if (node == this.edges[n][0]) {
                 return true;
             }
         }
         return false;
     }
 
-    defineCost(node, cost){
-        for(let n in this.edges){
-            if(node == this.edges[n][0]){
+    defineCost(node, cost) {
+        for (let n in this.edges) {
+            if (node == this.edges[n][0]) {
                 this.edges[n][1] = cost;
                 break
             }
